@@ -1,28 +1,31 @@
-import { Title, Text, Anchor } from "@mantine/core";
+import { Title, Text, Anchor, Button } from "@mantine/core";
 import classes from "./Welcome.module.css";
+import { Link } from "@remix-run/react";
+import { ButtonComponent } from "../Button/Button";
 
 export function Welcome() {
   return (
     <>
-      <Title className={classes.title} ta="center" mt={100}>
-        Welcome to{" "}
+      <Title className={classes.title} ta="center" mt={80}>
+        Welcome to the{" "}
         <Text
           inherit
           variant="gradient"
           component="span"
           gradient={{ from: "pink", to: "yellow" }}
         >
-          Mantine
+          Remix Verse
         </Text>
       </Title>
-      <Text color="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-        This starter Remix project includes a minimal setup for server side
-        rendering, if you want to learn more on Mantine + Remix integration
-        follow{" "}
-        <Anchor href="https://mantine.dev/guides/remix/" size="lg">
-          this guide
-        </Anchor>
-        . To get started edit index.tsx file.
+      <Text c="gray" ta="center" size="lg" maw={580} mx="auto" mt="xl">
+        Where Ideas Collide and Creativity Flourishes
+        Blend your voice with others, spark conversations, and shape the future of blogging.
+      </Text>
+      <Text c="gray" ta="center" size="lg" maw={580} mx="auto" mt="xl">
+
+        <Link to='/register'>
+          <ButtonComponent size="md">Create your blog now</ButtonComponent>
+        </Link>
       </Text>
     </>
   );

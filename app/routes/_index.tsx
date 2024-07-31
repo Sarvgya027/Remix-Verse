@@ -1,6 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Welcome } from "~/components/Welcome/Welcome";
 import { ColorSchemeToggle } from "~/components/ColorSchemeToggle/ColorSchemeToggle";
+import { Navbar } from "~/components/Navbar/Navbar";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,8 +13,11 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
+
       <Welcome />
-      <ColorSchemeToggle />
+
     </div>
   );
 }
+
+// this is where we show public posts on the homepage

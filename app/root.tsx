@@ -8,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Navbar } from "./components/Navbar/Navbar";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,7 +21,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+        <Navbar />
+          {children}
+          </MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
