@@ -1,42 +1,85 @@
 import { Box, Button, Flex, Group, PasswordInput, TextInput, Title } from "@mantine/core";
-import { json } from "@remix-run/node";
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { Form, useActionData, useLoaderData, useLocation, useNavigate, useNavigation } from "@remix-run/react";
 import { ButtonComponent } from "~/components/Button/Button";
-import * as Z from "zod";
 import { validateAction } from "~/utils/utils";
 import { ActionData } from "~/utils/types";
+import { loginSchema } from "~/utils/validationSchema";
+import directus from "~/lib/directus";
+import { login, registerUser } from "@directus/sdk";
+import { useEffect } from "react";
+import { notifications, useNotifications } from "@mantine/notifications";
+import { commitSession, getSession } from "~/utils/session/session";
 
-export const loader: LoaderFunction = async () => {
-  return json({ message: "This is the login page" });
+//loader
+export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
+  try {
+    return json({ message: "This is the login page" });
+  } catch (error) {
+    console.error("Loader error:", error);
+    return json({ error: 'An error occurred while loading the page.' }, { status: 500 });
+  }
 };
 
 
-export const schema = Z.object({
-  email: Z.string({
-    required_error: 'Email is required',
-  }).email('Invalid email'),
-  password: Z.string().min(6, 'Password must be at least 6 characters'),
-});
-
+//action
 export const action: ActionFunction = async ({ request }) => {
   const { formData, errors } = await validateAction({
     request,
-    schema
+    schema: loginSchema,
   });
   if (errors) return json({ errors }, { status: 400 });
 
   const { email, password } = formData;
   // console.log(email, password);
 
-  // Add authentication logic here
+  // authentication
+  try {
+    // const result = await directus.request(login(email, password)); //this only returns access token and expires
+    const result = await directus.login(email, password); //this returns access, refresh and expires, expires_at
 
-  return json({ success: true }); // redirect to another page
+    if (result?.access_token) {
+      const session = await getSession();
+
+      session.set("access_token", result.access_token);
+      session.set("refresh_token", result.refresh_token);
+      session.set("expires", result.expires);
+      session.set("expires_at", result.expires_at);
+
+      return redirect('/posts', {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+      });
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    return json({ error: 'An error occurred during login. Please try again.' }, { status: 500 });
+  }
+
 };
 
 
 export const Login = () => {
+  const navigation = useNavigation();
   const actionData = useActionData<ActionData>();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const registrationStatus = new URLSearchParams(location.search).get('registration');
+    if (registrationStatus === 'true') {
+      notifications.show({
+        title: "Success",
+        message: "User registered successfully",
+        color: "green",
+        autoClose: 5000,
+      });
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
+
   return (
     <Flex mih="70vh" align="center" justify="center">
       <Box maw={300} mx="auto">
@@ -61,8 +104,8 @@ export const Login = () => {
             error={actionData?.errors?.password}
           />
 
-          <ButtonComponent type="submit" fullWidth mt="xl">
-            Log in
+          <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
+            {navigation.state === 'submitting' ? 'Logging in...' : 'Login'}
           </ButtonComponent>
         </Form>
       </Box>

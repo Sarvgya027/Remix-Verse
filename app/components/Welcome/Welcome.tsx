@@ -22,9 +22,11 @@ export function Welcome() {
         Blend your voice with others, spark conversations, and shape the future of blogging.
       </Text>
       <Text c="gray" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-
         <Link to='/register'>
-          <ButtonComponent size="md">Create your blog now</ButtonComponent>
+          <ButtonComponent m={'lg'} size="md">Create your blog now</ButtonComponent>
+        </Link>
+        <Link to='/posts'>
+          <ButtonComponent size="md" color="gray" variant="outline">View all posts</ButtonComponent>
         </Link>
       </Text>
     </>

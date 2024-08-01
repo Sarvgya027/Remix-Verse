@@ -13,11 +13,11 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
-
+      <Navbar />
       <Welcome />
 
     </div>
   );
 }
 
-// this is where we show public posts on the homepage
+// this is just welcome page

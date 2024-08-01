@@ -1,30 +1,23 @@
 import { Box, Container, Flex, PasswordInput, TextInput, Title } from "@mantine/core";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { ButtonComponent } from "~/components/Button/Button";
-import * as Z from 'zod';
 import { validateAction } from "~/utils/utils";
 import { ActionData } from "~/utils/types";
+import { registrationSchema } from "~/utils/validationSchema";
+import directus from "~/lib/directus";
+import { createUser, registerUser } from "@directus/sdk";
+import { notifications } from "@mantine/notifications";
 
 
 export const loader: LoaderFunction = async () => {
   return json({ message: "This is the registration page" });
 };
 
-
-export const registrationSchema = Z.object({
-  firstName: Z.string().min(1, 'First Name is required'),
-  lastName: Z.string().min(1, 'Last Name is required'),
-  email: Z.string().email('Invalid email address'),
-  password: Z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: Z.string().min(6, 'Confirm Password must be at least 6 characters'),
-}).refine(data => data.password === data.confirmPassword, {
-  message: 'Passwords must match',
-  path: ['confirmPassword'],
-});
-
+// action
 export const action: ActionFunction = async ({ request }) => {
+
   const { formData, errors } = await validateAction({
     request,
     schema: registrationSchema,
@@ -33,14 +26,36 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ errors }, { status: 400 });
   }
   const { firstName, lastName, email, password } = formData;
-  console.log('Registration Data:', { firstName, lastName, email, password });
-  
-  return json({ success: true });
-};
+  // console.log('Registration Data:', { firstName, lastName, email, password });
+  const user = {
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    password
+  }
 
+  //registeration logic
+  try {
+    const result = await directus.request(registerUser(email, password, user)); //in this the user will be directly given authors role(if configured in directus settings)
+
+    // const result = await directus.request(createUser(user)); in this we have to manually give the authors role by roleID
+
+    return redirect('/login?registration=true', {
+      status: 303
+    });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return json({ error: error.message, message: 'User registration failed' }, { status: 500 });
+    } else {
+      return json({ error: 'An unknown error occurred', message: 'User registration failed' }, { status: 500 });
+    }
+  }
+};
 
 export const Register = () => {
   const actionData = useActionData<ActionData>();
+  const navigation = useNavigation();
 
   return (
     <Flex mih="80vh" align="center" justify="center">
@@ -90,8 +105,8 @@ export const Register = () => {
             error={actionData?.errors?.confirmPassword}
           />
 
-          <ButtonComponent type="submit" fullWidth mt="xl">
-            Register
+          <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
+            {navigation.state === 'submitting' ? 'Registering...' : 'Register'}
           </ButtonComponent>
         </Form>
       </Box>

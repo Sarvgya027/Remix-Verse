@@ -31,6 +31,7 @@ import classes from './Navbar.module.css';
 import { Link } from '@remix-run/react';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { ButtonComponent } from '../Button/Button';
+import { User } from '~/utils/types';
 
 const mockdata = [
   {
@@ -65,28 +66,33 @@ const mockdata = [
   },
 ];
 
-export function Navbar() {
+
+type NavbarProps = {
+  user: User | null;
+};
+
+export function Navbar({ user}: NavbarProps ) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
+  // const links = mockdata.map((item) => (
+  //   <UnstyledButton className={classes.subLink} key={item.title}>
+  //     <Group wrap="nowrap" align="flex-start">
+  //       <ThemeIcon size={34} variant="default" radius="md">
+  //         <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
+  //       </ThemeIcon>
+  //       <div>
+  //         <Text size="sm" fw={500}>
+  //           {item.title}
+  //         </Text>
+  //         <Text size="xs" c="dimmed">
+  //           {item.description}
+  //         </Text>
+  //       </div>
+  //     </Group>
+  //   </UnstyledButton>
+  // ));
 
   return (
     <Box pb={10}>
@@ -95,12 +101,18 @@ export function Navbar() {
           <Link className={classes.logo} to='/'>Remix Verse</Link>
 
           <Group visibleFrom="sm">
-            <Link to='/login'>
-              <Button variant="default">Log in</Button>
-            </Link>
-            <Link to='/register'>
-            <ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Sign up</ButtonComponent>
-            </Link>
+            {user ? (
+              <ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent>
+            ) : (
+              <>
+                <Link to='/login'>
+                  <Button variant="default">Log in</Button>
+                </Link>
+                <Link to='/register'>
+                  <ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Sign up</ButtonComponent>
+                </Link>
+              </>
+            )}
             <ColorSchemeToggle />
           </Group>
 
@@ -130,12 +142,18 @@ export function Navbar() {
               }
             }}
           >
-            <Link style={{ width: '50%' }} to='/login' onClick={closeDrawer}>
-              <ButtonComponent w='100%'>Log in</ButtonComponent>
-            </Link>
-            <Link style={{ width: '50%' }} to='/register' onClick={closeDrawer}>
-              <ButtonComponent w='100%'>Register</ButtonComponent>
-            </Link>
+            {user ? (
+              <ButtonComponent w='100%' >Log out</ButtonComponent>
+            ) : (
+              <>
+                <Link style={{ width: '50%' }} to='/login' onClick={closeDrawer}>
+                  <ButtonComponent w='100%'>Log in</ButtonComponent>
+                </Link>
+                <Link style={{ width: '50%' }} to='/register' onClick={closeDrawer}>
+                  <ButtonComponent w='100%'>Register</ButtonComponent>
+                </Link>
+              </>
+            )}
             <ColorSchemeToggle />
           </Stack>
         </ScrollArea>
