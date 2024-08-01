@@ -9,6 +9,7 @@ import { registrationSchema } from "~/utils/validationSchema";
 import directus from "~/lib/directus";
 import { createUser, registerUser } from "@directus/sdk";
 import { notifications } from "@mantine/notifications";
+import { Navbar } from "~/components/Navbar/Navbar";
 
 
 export const loader: LoaderFunction = async () => {
@@ -58,59 +59,62 @@ export const Register = () => {
   const navigation = useNavigation();
 
   return (
-    <Flex mih="80vh" align="center" justify="center">
-      <Box maw={300} mx="auto">
-        <Title order={2} ta="center" mb={20}>
-          Create your account
-        </Title>
+    <>
+    <Navbar user={null} />
+      <Flex mih="80vh" align="center" justify="center">
+        <Box miw={300} mx="auto">
+          <Title order={2} ta="center" mb={20}>
+            Create your account
+          </Title>
 
-        <Form method="post">
-          <TextInput
-            name="firstName"
-            withAsterisk
-            label="First Name"
-            placeholder="John"
-            error={actionData?.errors?.firstName}
-          />
-          <TextInput
-            name="lastName"
-            withAsterisk
-            label="Last Name"
-            placeholder="Doe"
-            mt="md"
-            error={actionData?.errors?.lastName}
-          />
-          <TextInput
-            name="email"
-            withAsterisk
-            label="Email"
-            placeholder="your@email.com"
-            mt="md"
-            error={actionData?.errors?.email}
-          />
-          <PasswordInput
-            name="password"
-            withAsterisk
-            label="Password"
-            placeholder="Your password"
-            mt="md"
-            error={actionData?.errors?.password}
-          />
-          <PasswordInput
-            name="confirmPassword"
-            withAsterisk
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            mt="md"
-            error={actionData?.errors?.confirmPassword}
-          />
+          <Form method="post">
+            <TextInput
+              name="firstName"
+              withAsterisk
+              label="First Name"
+              placeholder="John"
+              error={actionData?.errors?.firstName}
+            />
+            <TextInput
+              name="lastName"
+              withAsterisk
+              label="Last Name"
+              placeholder="Doe"
+              mt="md"
+              error={actionData?.errors?.lastName}
+            />
+            <TextInput
+              name="email"
+              withAsterisk
+              label="Email"
+              placeholder="your@email.com"
+              mt="md"
+              error={actionData?.errors?.email}
+            />
+            <PasswordInput
+              name="password"
+              withAsterisk
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+              error={actionData?.errors?.password}
+            />
+            <PasswordInput
+              name="confirmPassword"
+              withAsterisk
+              label="Confirm Password"
+              placeholder="Confirm your password"
+              mt="md"
+              error={actionData?.errors?.confirmPassword}
+            />
 
-          <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
-            {navigation.state === 'submitting' ? 'Registering...' : 'Register'}
-          </ButtonComponent>
-        </Form>
-      </Box>
-    </Flex>
+            <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
+              {navigation.state === 'submitting' ? 'Registering...' : 'Register'}
+            </ButtonComponent>
+          </Form>
+        </Box>
+      </Flex>
+    </>
   );
 };
 

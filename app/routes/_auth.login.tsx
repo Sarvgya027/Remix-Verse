@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Group, PasswordInput, TextInput, Title } from "@mantine/core";
 import { json, redirect } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, useActionData, useLoaderData, useLocation, useNavigate, useNavigation } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData, useLocation, useNavigate, useNavigation } from "@remix-run/react";
 import { ButtonComponent } from "~/components/Button/Button";
 import { validateAction } from "~/utils/utils";
 import { ActionData } from "~/utils/types";
@@ -11,6 +11,7 @@ import { login, registerUser } from "@directus/sdk";
 import { useEffect } from "react";
 import { notifications, useNotifications } from "@mantine/notifications";
 import { commitSession, getSession } from "~/utils/session/session";
+import { Navbar } from "~/components/Navbar/Navbar";
 
 //loader
 export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
@@ -81,35 +82,43 @@ export const Login = () => {
   }, [location, navigate]);
 
   return (
-    <Flex mih="70vh" align="center" justify="center">
-      <Box maw={300} mx="auto">
-        <Title order={2} ta="center" mt="md" mb={50}>
-          Login to your account
-        </Title>
+    <>
+      <Navbar user={null} />
+      <Flex mih="70vh" align="center" justify="center">
+        <Box miw={300} mx="auto">
+          <Title order={2} ta="center" mt="md" mb={50}>
+            Login to your account
+          </Title>
 
-        <Form method="post">
-          <TextInput
-            name="email"
-            withAsterisk
-            label="Email"
-            placeholder="your@email.com"
-            error={actionData?.errors?.email}
-          />
-          <PasswordInput
-            name="password"
-            withAsterisk
-            label="Password"
-            placeholder="Your password"
-            mt="md"
-            error={actionData?.errors?.password}
-          />
+          <Form method="post">
+            <TextInput
+              name="email"
+              withAsterisk
+              label="Email"
+              placeholder="your@email.com"
+              error={actionData?.errors?.email}
+            />
+            <PasswordInput
+              name="password"
+              withAsterisk
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+              error={actionData?.errors?.password}
+            />
 
-          <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
-            {navigation.state === 'submitting' ? 'Logging in...' : 'Login'}
-          </ButtonComponent>
-        </Form>
-      </Box>
-    </Flex>
+            <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
+              {navigation.state === 'submitting' ? 'Logging in...' : 'Login'}
+            </ButtonComponent>
+            <Link to='/register'>
+              <ButtonComponent color="gray" variant="outline" fullWidth mt="md">
+                Create an account
+              </ButtonComponent>
+            </Link>
+          </Form>
+        </Box>
+      </Flex>
+    </>
   );
 };
 

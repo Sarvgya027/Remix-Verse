@@ -9,7 +9,6 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useNavigation,
   useRevalidator,
 } from "@remix-run/react";
 import { Navbar } from "./components/Navbar/Navbar";
@@ -19,26 +18,8 @@ import { getUserData } from "./utils/Auth/auth.userDetails";
 import { useEffect } from "react";
 
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const userData = await getUserData(request);
-  // console.log('user form root layout', userData)
-
-  return json({ user: userData || null });
-
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
-  const user = useLoaderData<typeof loader>();
-  const revalidator = useRevalidator();
-  const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   if (user.user) {
-  //     revalidator.revalidate();
-  //   }
-  // }, [user, revalidator]);
-
-  // console.log('user form layout', user)
   return (
     <html lang="en">
       <head>
@@ -51,8 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <MantineProvider>
           <Notifications />
-
-          <Outlet />
+          {children}
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />

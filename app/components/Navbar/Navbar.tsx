@@ -102,7 +102,10 @@ export function Navbar({ user }: NavbarProps) {
 
           <Group visibleFrom="sm">
             {user ? (
-              <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
+              <>
+                <Link to='/new'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Create a new Blog</ButtonComponent></Link>
+                <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
+              </>
             ) : (
               <>
                 <Link to='/login'>
@@ -143,7 +146,10 @@ export function Navbar({ user }: NavbarProps) {
             }}
           >
             {user ? (
-              <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
+              <>
+                <Link to='/new'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Create a new Blog</ButtonComponent></Link>
+                <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
+              </>
             ) : (
               <>
                 <Link style={{ width: '50%' }} to='/login' onClick={closeDrawer}>
