@@ -71,7 +71,7 @@ type NavbarProps = {
   user: User | null;
 };
 
-export function Navbar({ user}: NavbarProps ) {
+export function Navbar({ user }: NavbarProps) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
@@ -102,11 +102,11 @@ export function Navbar({ user}: NavbarProps ) {
 
           <Group visibleFrom="sm">
             {user ? (
-              <ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent>
+              <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
             ) : (
               <>
                 <Link to='/login'>
-                  <Button variant="default">Log in</Button>
+                  <ButtonComponent variant="default">Log in</ButtonComponent>
                 </Link>
                 <Link to='/register'>
                   <ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Sign up</ButtonComponent>
@@ -143,7 +143,7 @@ export function Navbar({ user}: NavbarProps ) {
             }}
           >
             {user ? (
-              <ButtonComponent w='100%' >Log out</ButtonComponent>
+              <Link to='/logout'><ButtonComponent variant="gradient" gradient={{ from: "pink", to: "yellow" }}>Log out</ButtonComponent></Link>
             ) : (
               <>
                 <Link style={{ width: '50%' }} to='/login' onClick={closeDrawer}>

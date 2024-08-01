@@ -10,10 +10,11 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+
 export default function Index() {
   return (
     <div>
-      <Navbar />
+      <Navbar user={null} />
       <Welcome />
 
     </div>
