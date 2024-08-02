@@ -13,9 +13,7 @@ import {
 } from "@remix-run/react";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Notifications } from "@mantine/notifications";
-import { json, LoaderFunction } from "@remix-run/node";
-import { getUserData } from "./utils/Auth/auth.userDetails";
-import { useEffect } from "react";
+import '@mantine/tiptap/styles.css';
 
 
 export function Layout({ children }: { children: React.ReactNode }) {

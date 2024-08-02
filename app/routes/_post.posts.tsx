@@ -11,6 +11,7 @@ import { getUserData } from "~/utils/Auth/auth.userDetails";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUserData(request)
+
   const response = await directus.request(readItems('blogs', {
     sort: ['sort', '-date_created'],
   }))
@@ -24,6 +25,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Posts() {
   const { user, data } = useLoaderData<typeof loader>();
+  // console.log(data)
 
   return (
     <div>

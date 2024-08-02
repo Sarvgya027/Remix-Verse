@@ -13,7 +13,7 @@ import { notifications, useNotifications } from "@mantine/notifications";
 import { commitSession, getSession } from "~/utils/session/session";
 import { Navbar } from "~/components/Navbar/Navbar";
 
-//loader
+
 export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
   try {
     return json({ message: "This is the login page" });
@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
 };
 
 
-//action
+
 export const action: ActionFunction = async ({ request }) => {
   const { formData, errors } = await validateAction({
     request,

@@ -15,6 +15,7 @@ interface BlogPost {
   featured_image: string | null;
   fullName: string;
   date_created: string;
+  author: string;
 }
 
 

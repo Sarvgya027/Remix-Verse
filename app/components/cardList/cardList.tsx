@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mantine/core";
+import { Box, Grid, Text } from "@mantine/core";
 import { BlogCard } from "../card/BlogCard";
 
 export interface BlogPost {
@@ -8,6 +8,7 @@ export interface BlogPost {
   featured_image: string,
   fullName: string,
   date_created: string
+  author: string
 }
 
 interface CardListProps {
@@ -15,7 +16,14 @@ interface CardListProps {
 }
 
 
+
 export const CardList: React.FC<CardListProps> = ({data}) => {
+  // console.log(data)
+
+  if (!data) {
+    return (<Text>No posts available</Text>) 
+  }
+
   return (
     <Box maw={1200} mx="auto" px="md">
       <Grid gutter="md">

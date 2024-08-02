@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ errors }, { status: 400 });
   }
   const { firstName, lastName, email, password } = formData;
-  // console.log('Registration Data:', { firstName, lastName, email, password });
+  // console.log('registration data:', { firstName, lastName, email, password });
   const user = {
     first_name: firstName,
     last_name: lastName,
