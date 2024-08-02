@@ -41,6 +41,9 @@ export const action: ActionFunction = async ({ request }) => {
     const result = await directus.login(email, password); //this returns access, refresh and expires, expires_at
 
     if (result?.access_token) {
+
+      directus.setToken(result.access_token)
+
       const session = await getSession();
 
       session.set("access_token", result.access_token);

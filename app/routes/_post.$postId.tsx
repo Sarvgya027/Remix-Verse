@@ -1,12 +1,13 @@
-import { json, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
 import React from 'react';
 import { Container, Title, Text, Button, Group, Stack, Image, Avatar, Divider, Box } from '@mantine/core';
-import { Link, useLoaderData, useNavigate } from '@remix-run/react';
+import { Form, Link, useLoaderData, useNavigate } from '@remix-run/react';
 import directus from "~/lib/directus";
 import { getUserData } from "~/utils/Auth/auth.userDetails";
-import { readItem } from "@directus/sdk";
-import { IconCalendar, IconArrowLeft, IconTrash } from '@tabler/icons-react';
+import { deleteItem, readItem } from "@directus/sdk";
+import { IconCalendar, IconArrowLeft, IconTrash, IconEdit } from '@tabler/icons-react';
 import { ButtonComponent } from "~/components/Button/Button";
+import { getSession } from "~/utils/session/session";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const postId = params.postId;
@@ -16,13 +17,42 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   }
   const user = await getUserData(request);
   const blog = await directus.request(readItem('blogs', postId));
-  // console.log(blog)
-  return json({ blog, user });
+  // const access_token = getSession(request.headers.get(""))
+
+
+  return json({ blog, user, postId });
 };
 
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const intent = formData.get('intent')
+  const postId = formData.get('postId') as string
+  // console.log(intent, postId)
+
+  if (intent === 'delete') {
+    try {
+      const result = await directus.request(deleteItem('blogs', postId))
+
+      return redirect('/posts')
+
+      // console.log(result)
+      redirect('/posts')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  return null
+
+}
+
 const Post: React.FC = () => {
-  const { blog, user } = useLoaderData<typeof loader>();
-  const userId = user?.data?.id
+  const { blog, user, postId } = useLoaderData<typeof loader>();
+  const userId = user?.data?.id;
+  // console.log(postId)
 
   const navigate = useNavigate();
 
@@ -84,14 +114,30 @@ const Post: React.FC = () => {
             Back to All Posts
           </Button>
           {user && userId === blog.author && (
-            <ButtonComponent
-              variant="light"
-              color="red"
-              leftSection={<IconTrash size={16} />}
+            <>
+              <Link to={`/edit/${postId}`}>
+                <ButtonComponent
+                  variant="light"
+                  color="blue"
+                  leftSection={<IconEdit size={16} />}>Edit Post
+                </ButtonComponent>
+              </Link>
+              <Form method="post">
 
-            >
-              Delete Post
-            </ButtonComponent>
+                <input type='hidden' name='postId' value={postId} />
+                <input type="hidden" name="intent" value='delete' />
+
+                <ButtonComponent
+                  type="submit"
+                  variant="light"
+                  color="red"
+                  leftSection={<IconTrash size={16} />}
+
+                >
+                  Delete Post
+                </ButtonComponent>
+              </Form>
+            </>
           )}
         </Group>
       </Stack>
