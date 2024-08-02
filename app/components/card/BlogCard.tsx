@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 import { ButtonComponent } from '../Button/Button';
 import { Link } from '@remix-run/react';
@@ -24,11 +24,13 @@ interface BlogPostCardProps {
 }
 
 export const BlogCard: React.FC<BlogPostCardProps> = ({ post }) => {
+  // console.log('from blogcard', post)
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
         <Image
-          src={post.featured_image}
+          src={`https://j2s3f783k2.tribecrafter.app/assets/${post.featured_image}.png`}
           height={160}
           alt={post.title}
         />

@@ -42,5 +42,5 @@ export default function Posts() {
       </Text>
       <CardList data={data} />
     </div>
-  );
+  )
 };

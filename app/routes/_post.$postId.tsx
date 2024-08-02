@@ -70,7 +70,7 @@ const Post: React.FC = () => {
 
         {blog.featured_image && (
           <Image
-            src={blog.featured_image}
+            src={`https://j2s3f783k2.tribecrafter.app/assets/${blog.featured_image}.png`}
             alt={blog.title}
             radius="md"
             h={400}

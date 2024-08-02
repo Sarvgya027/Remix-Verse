@@ -51,6 +51,8 @@ export const action: ActionFunction = async ({ request }) => {
       session.set("expires", result.expires);
       session.set("expires_at", result.expires_at);
 
+
+
       return redirect('/posts', {
         headers: {
           "Set-Cookie": await commitSession(session),

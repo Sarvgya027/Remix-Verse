@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
   const createdBlog = {
     title,
     content,
-    // featured_image,
+    featured_image,
     fullName,
     author
   }
