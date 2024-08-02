@@ -1,4 +1,3 @@
-import { logout } from "@directus/sdk";
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import directus from "~/lib/directus";
 import { destroySession, getSession } from "~/utils/session/session";
@@ -19,6 +18,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 
-export const action: ActionFunction = async ({ request }) => {
+// export const action: ActionFunction = async ({ request }) => {
 
-}
+// }

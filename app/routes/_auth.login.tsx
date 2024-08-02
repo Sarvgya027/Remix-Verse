@@ -16,7 +16,7 @@ import { Navbar } from "~/components/Navbar/Navbar";
 
 export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
   try {
-    return json({ message: "This is the login page" });
+    return json({ message: "this is login page" });
   } catch (error) {
     console.error("Loader error:", error);
     return json({ error: 'An error occurred while loading the page.' }, { status: 500 });
