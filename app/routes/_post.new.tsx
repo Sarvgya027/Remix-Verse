@@ -32,11 +32,11 @@ export const action: ActionFunction = async ({ request }) => {
   const featured_image = formData.get('featuredImage');
   const fullName = formData.get('fullName');
   const author = formData.get('author');
-  // console.log(title, content, featured_image, fullName, author);
+  console.log(title, content, featured_image, fullName, author);
 
   let imageID = null;
 
-  if(featured_image && featured_image instanceof Blob) {
+  if (featured_image && featured_image instanceof Blob) {
     const imageData = new FormData();
     imageData.append('file', featured_image);
 
@@ -49,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
   const createdBlog = {
     title,
     content,
-    featured_image : imageID,
+    featured_image: imageID,
     fullName,
     author
   }
@@ -74,6 +74,7 @@ export const action: ActionFunction = async ({ request }) => {
 const New = () => {
   const { user } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+  const [content, setContent] = useState('')
 
   return (
     <div>
@@ -89,12 +90,13 @@ const New = () => {
           />
 
           <Text mx={40}>Write Your Blog's Content below</Text>
-          {/* <WYSIWYG  /> */}
-          <Textarea
-            m='40'
-            label="Content"
+          <WYSIWYG onChange={setContent} />
+
+          <input
             placeholder="Enter the content for your blog"
             name="content"
+            value={content}
+            hidden
           />
 
           <FileInput

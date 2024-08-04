@@ -4,7 +4,7 @@
 import { readItem, updateItem } from "@directus/sdk";
 import { Center, FileInput, Select, Text, Textarea, TextInput } from "@mantine/core";
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { ButtonComponent } from "~/components/Button/Button";
 import { Navbar } from "~/components/Navbar/Navbar";
 import directus from "~/lib/directus";
@@ -70,6 +70,7 @@ const EditPost = () => {
   const { user, blog } = useLoaderData<typeof loader>();
   // console.log(blog)
   // console.log(user)
+  const navigation = useNavigation();
 
   return (
     <div>
@@ -117,7 +118,7 @@ const EditPost = () => {
 
 
           <Center>
-            <ButtonComponent w={200} m='20' type="submit">Update</ButtonComponent>
+            <ButtonComponent loading={navigation.state === 'submitting'} w={200} m='20' type="submit">Update</ButtonComponent>
           </Center>
         </Form>
       </Center>
