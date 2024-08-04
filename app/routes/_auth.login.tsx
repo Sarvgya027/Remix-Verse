@@ -38,6 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
   // authentication
   try {
     // const result = await directus.request(login(email, password)); //this only returns access token and expires
+    
     const result = await directus.login(email, password); //this returns access, refresh and expires, expires_at
 
     if (result?.access_token) {

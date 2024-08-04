@@ -19,7 +19,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!user) {
     return redirect('/login')
   }
-
   try {
     const blog = await directus.request(readItem('blogs', blogId))
     // console.log(blog)
@@ -44,9 +43,9 @@ export const action: ActionFunction = async ({ request }) => {
   const blog_id = formData.get('blog_id') as string;
   // console.log(blog_id, title, content, featured_image, fullName, author);
 
-  // if (blog_id !== author) {
-  //   return json({ error: 'You are not authorized to edit this blog.' }, { status: 403 })
-  // }
+  if (blog_id !== author) {
+    return json({ error: 'You are not authorized to edit this blog.' }, { status: 403 })
+  }
 
   const updatedBlog = {
     title,

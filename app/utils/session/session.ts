@@ -8,7 +8,7 @@ export const { getSession, commitSession, destroySession } = createCookieSession
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 24 * 2,
     secrets: [process.env.SESSION_SECRET || ""],
   },
 });

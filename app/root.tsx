@@ -15,7 +15,6 @@ import { Navbar } from "./components/Navbar/Navbar";
 import { Notifications } from "@mantine/notifications";
 import '@mantine/tiptap/styles.css';
 
-
 export function Layout({ children }: { children: React.ReactNode }) {
 
   return (

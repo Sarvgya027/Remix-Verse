@@ -9,6 +9,7 @@ interface ButtonComponentprops extends ButtonProps {
 export const ButtonComponent: React.FC<ButtonComponentprops> = ({children, type, ...props}) => {
   return (
     <Button
+      
       type={type}
       variant="gradient"
       gradient={{ from: 'pink', to: 'yellow' }}

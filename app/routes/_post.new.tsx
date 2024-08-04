@@ -5,13 +5,14 @@ import { useState } from 'react';
 import { useForm } from '@mantine/form';
 import { TextInput, Textarea, FileInput, Select, Button, Text, Group, Center, Combobox } from '@mantine/core';
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
-import { Form, useFetcher, useLoaderData } from '@remix-run/react';
+import { Form, useFetcher, useLoaderData, useNavigation } from '@remix-run/react';
 import { WYSIWYG } from '~/components/wysiwyg/wysiwyg';
 import { Navbar } from '~/components/Navbar/Navbar';
 import { ButtonComponent } from '~/components/Button/Button';
 import { getUserData } from '~/utils/Auth/auth.userDetails';
 import directus from '~/lib/directus';
-import { createItem } from '@directus/sdk';
+import { createItem, uploadFiles } from '@directus/sdk';
+import { object } from 'zod';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserData(request)
@@ -32,10 +33,23 @@ export const action: ActionFunction = async ({ request }) => {
   const fullName = formData.get('fullName');
   const author = formData.get('author');
   // console.log(title, content, featured_image, fullName, author);
+
+  let imageID = null;
+
+  if(featured_image && featured_image instanceof Blob) {
+    const imageData = new FormData();
+    imageData.append('file', featured_image);
+
+    const result = await directus.request(uploadFiles(imageData))
+    // console.log(result.id)
+    imageID = result.id
+  }
+
+
   const createdBlog = {
     title,
     content,
-    featured_image,
+    featured_image : imageID,
     fullName,
     author
   }
@@ -54,14 +68,12 @@ export const action: ActionFunction = async ({ request }) => {
     console.log(error);
   }
 
-
-
   return json({ success: true });
 }
 
 const New = () => {
   const { user } = useLoaderData<typeof loader>();
-
+  const navigation = useNavigation();
 
   return (
     <div>
@@ -103,7 +115,7 @@ const New = () => {
           <input type="text" name='author' hidden defaultValue={`${user.data.id}`} />
 
           <Center>
-            <ButtonComponent w={200} m='20' type="submit">Submit</ButtonComponent>
+            <ButtonComponent loading={navigation.state === 'submitting'} w={200} m='20' type="submit">Submit</ButtonComponent>
           </Center>
         </Form>
       </Center>
