@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
   // authentication
   try {
     // const result = await directus.request(login(email, password)); //this only returns access token and expires
-    
+
     const result = await directus.login(email, password); //this returns access, refresh and expires, expires_at
 
     if (result?.access_token) {
@@ -114,7 +114,7 @@ export const Login = () => {
             />
 
             <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
-              {navigation.state === 'submitting' ? 'Logging in...' : 'Login'}
+              Login
             </ButtonComponent>
             <Link to='/register'>
               <ButtonComponent color="gray" variant="outline" fullWidth mt="md">

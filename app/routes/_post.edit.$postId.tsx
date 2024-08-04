@@ -56,10 +56,9 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const result = await directus.request(updateItem('blogs', blog_id, updatedBlog));
     // console.log(result)
-    if(result.blog_id) {
+    if (result.blog_id) {
       return redirect('/posts')
     }
-
   } catch (error) {
     console.log(error)
   }
@@ -101,7 +100,7 @@ const EditPost = () => {
             label="Featured Image"
             placeholder="Upload an image"
             name="featuredImage"
-          // defaultValue={blog.featured_image} 
+            // defaultValue={blog.featured_image}
           />
 
           <Select

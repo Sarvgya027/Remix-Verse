@@ -109,7 +109,7 @@ export const Register = () => {
             />
 
             <ButtonComponent loading={navigation.state === 'submitting'} type="submit" fullWidth mt="xl">
-              {navigation.state === 'submitting' ? 'Registering...' : 'Register'}
+              Register
             </ButtonComponent>
           </Form>
         </Box>

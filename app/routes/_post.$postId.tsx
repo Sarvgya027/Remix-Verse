@@ -1,7 +1,7 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
 import React from 'react';
 import { Container, Title, Text, Button, Group, Stack, Image, Avatar, Divider, Box } from '@mantine/core';
-import { Form, Link, useLoaderData, useNavigate } from '@remix-run/react';
+import { Form, Link, useLoaderData, useNavigate, useNavigation } from '@remix-run/react';
 import directus from "~/lib/directus";
 import { getUserData } from "~/utils/Auth/auth.userDetails";
 import { deleteItem, readItem } from "@directus/sdk";
@@ -55,6 +55,7 @@ const Post: React.FC = () => {
   // console.log(postId)
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
 
   return (
     <Container size="md" py="xl">
@@ -132,7 +133,7 @@ const Post: React.FC = () => {
                   variant="light"
                   color="red"
                   leftSection={<IconTrash size={16} />}
-
+                  loading={navigation.state === 'submitting'}
                 >
                   Delete Post
                 </ButtonComponent>
