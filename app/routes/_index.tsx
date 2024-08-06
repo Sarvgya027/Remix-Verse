@@ -10,13 +10,12 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-
 export default function Index() {
   return (
     <div>
       <Navbar user={null} />
       <Welcome />
-
+      {/* HAA ME HU PAGAL */}
     </div>
   );
 }
